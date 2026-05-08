@@ -50,3 +50,23 @@ http://127.0.0.1:8000
 ## Notes
 
 This frontend has no Node.js build step. It is production-friendly for classroom/local use because it is just static HTML, CSS, and JavaScript served by FastAPI.
+
+
+
+# AI Dependency Usage Analyzer
+
+AI-powered dependency intelligence platform for Python projects.
+
+## Features
+- AST-based import parsing
+- Recursive project scanning
+- Dependency usage tracking
+- Unused import detection
+- AI-generated insights
+- FastAPI backend
+- Ollama integration
+
+## Run
+
+```bash
+python -m uvicorn api:app --reload
