@@ -1,0 +1,102 @@
+{
+  "run_id": "run_804eb08ed791",
+  "automation_id": "adhoc-e54ce28f",
+  "automation_name": "Study Planner",
+  "status": "running",
+  "started_at": "2026-05-08T18:12:13+00:00",
+  "finished_at": null,
+  "duration_ms": null,
+  "result": null,
+  "error": null,
+  "output_files": [
+    {
+      "name": "execution_log.md",
+      "path": "execution_log.md",
+      "size_bytes": 612,
+      "modified_at": "2026-05-08T23:32:03",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "final_summary.md",
+      "path": "final_summary.md",
+      "size_bytes": 713,
+      "modified_at": "2026-05-08T23:31:53",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "import_mapping.md",
+      "path": "import_mapping.md",
+      "size_bytes": 290,
+      "modified_at": "2026-05-08T23:31:27",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "dependency_statistics.md",
+      "path": "dependency_statistics.md",
+      "size_bytes": 442,
+      "modified_at": "2026-05-08T23:31:19",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "project_overview.md",
+      "path": "project_overview.md",
+      "size_bytes": 436,
+      "modified_at": "2026-05-08T23:31:08",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "library_summary.md",
+      "path": "library_summary.md",
+      "size_bytes": 564,
+      "modified_at": "2026-05-08T23:31:00",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "dependency_report.md",
+      "path": "dependency_report.md",
+      "size_bytes": 577,
+      "modified_at": "2026-05-08T23:30:50",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "ai_analysis_report.md",
+      "path": "ai_analysis_report.md",
+      "size_bytes": 965,
+      "modified_at": "2026-05-08T23:11:39",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "app.py",
+      "path": "app.py",
+      "size_bytes": 306,
+      "modified_at": "2026-05-08T13:47:28",
+      "extension": ".py",
+      "mime_type": "text/x-python",
+      "previewable": true
+    }
+  ],
+  "stats": {
+    "duration_ms": null,
+    "total_events": 2,
+    "steps": 0,
+    "retries": 0,
+    "errors": 0,
+    "outputs": 9
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "run_id": "run_400ad97f59be",
+  "automation_id": "dependency-usage-analyzer",
+  "automation_name": "Dependency Usage Analyzer",
+  "status": "failed",
+  "started_at": "2026-05-08T17:36:38+00:00",
+  "finished_at": "2026-05-08T17:39:29+00:00",
+  "duration_ms": 171000,
+  "result": {
+    "answer": "Stopped after reaching max_steps=10. Task may be incomplete.",
+    "steps": 10,
+    "success": false,
+    "error": "Stopped after reaching max_steps=10. Task may be incomplete."
+  },
+  "error": "Stopped after reaching max_steps=10. Task may be incomplete.",
+  "output_files": [
+    {
+      "name": "final_summary.md",
+      "path": "final_summary.md",
+      "size_bytes": 684,
+      "modified_at": "2026-05-08T23:09:29",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "ai_analysis_report.md",
+      "path": "ai_analysis_report.md",
+      "size_bytes": 551,
+      "modified_at": "2026-05-08T23:09:19",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "import_mapping.md",
+      "path": "import_mapping.md",
+      "size_bytes": 371,
+      "modified_at": "2026-05-08T23:09:10",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "dependency_statistics.md",
+      "path": "dependency_statistics.md",
+      "size_bytes": 336,
+      "modified_at": "2026-05-08T23:09:02",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "project_overview.md",
+      "path": "project_overview.md",
+      "size_bytes": 602,
+      "modified_at": "2026-05-08T23:08:54",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "library_summary.md",
+      "path": "library_summary.md",
+      "size_bytes": 505,
+      "modified_at": "2026-05-08T23:08:44",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "dependency_report.md",
+      "path": "dependency_report.md",
+      "size_bytes": 503,
+      "modified_at": "2026-05-08T23:08:35",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "execution_log.md",
+      "path": "execution_log.md",
+      "size_bytes": 0,
+      "modified_at": "2026-05-08T14:22:14",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "app.py",
+      "path": "app.py",
+      "size_bytes": 306,
+      "modified_at": "2026-05-08T13:47:28",
+      "extension": ".py",
+      "mime_type": "text/x-python",
+      "previewable": true
+    }
+  ],
+  "stats": {
+    "duration_ms": 171000,
+    "total_events": 55,
+    "steps": 14,
+    "retries": 4,
+    "errors": 2,
+    "outputs": 9
+  }
+}

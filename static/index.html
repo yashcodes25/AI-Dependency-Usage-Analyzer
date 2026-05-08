@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentKit Studio</title>
+  <meta name="description" content="Local visual automation builder for AgentKit and Ollama." />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+
+<body>
+  <div id="app" class="app-shell">
+
+    <!-- =========================================================
+      AUTH SCREEN
+    ========================================================== -->
+    <section id="authScreen" class="auth-screen hidden" aria-label="Authentication">
+      <div class="auth-card">
+        <div class="auth-brand">
+          <div class="brand-mark">AK</div>
+          <div>
+            <h1>AgentKit Studio</h1>
+            <p>Local-first automation builder for Ollama agents.</p>
+          </div>
+        </div>
+
+        <div class="auth-tabs" role="tablist">
+          <button id="loginTabBtn" class="active" type="button">Sign in</button>
+          <button id="registerTabBtn" type="button">Register</button>
+        </div>
+
+        <form id="loginForm" class="auth-form" autocomplete="on">
+          <label>
+            Email
+            <input id="loginEmail" type="email" placeholder="you@example.com" autocomplete="email" required />
+          </label>
+
+          <label>
+            Password
+            <input id="loginPassword" type="password" placeholder="••••••••" autocomplete="current-password" required />
+          </label>
+
+          <button class="btn primary wide" type="submit">Sign in</button>
+        </form>
+
+        <form id="registerForm" class="auth-form hidden" autocomplete="on">
+          <label>
+            Name
+            <input id="registerName" type="text" placeholder="Your name" autocomplete="name" required />
+          </label>
+
+          <label>
+            Email
+            <input id="registerEmail" type="email" placeholder="you@example.com" autocomplete="email" required />
+          </label>
+
+          <label>
+            Password
+            <input id="registerPassword" type="password" placeholder="Minimum 8 characters" autocomplete="new-password"
+              required />
+          </label>
+
+          <button class="btn primary wide" type="submit">Create account</button>
+          <p class="muted tiny center-text">The first registered user becomes the local admin.</p>
+        </form>
+
+        <div class="auth-footnote">
+          <span><span class="mono-icon">lock</span> 100% local</span>
+          <span>•</span>
+          <span>Your data stays on your machine</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+      TOP HEADER
+    ========================================================== -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">AK</div>
+        <strong>AgentKit Studio</strong>
+      </div>
+
+      <div class="status-strip">
+        <div class="status-pill"><span></span> Local</div>
+        <div class="status-pill connected"><span></span> Ollama Connected</div>
+        <div class="status-pill persistent compact-only"><span></span> SQLite + JSON</div>
+      </div>
+
+      <div class="top-spacer"></div>
+
+      <button class="btn ghost" id="docsBtn" type="button">Docs</button>
+      <button class="btn ghost" id="exportBtn" type="button">&lt;/&gt; Export <kbd>⌘E</kbd></button>
+      <button class="btn primary" id="topRunBtn" type="button">Run Automation</button>
+
+      <div class="user-menu">
+        <button class="avatar" id="avatarBtn" type="button" title="Account">SA</button>
+        <div id="userDropdown" class="user-dropdown hidden">
+          <div class="user-dropdown-head">
+            <strong id="currentUserName">Local User</strong>
+            <span id="currentUserEmail">local@agentkit</span>
+          </div>
+          <button id="logoutBtn" type="button">Sign out</button>
+        </div>
+      </div>
+    </header>
+
+    <!-- =========================================================
+      MAIN LAYOUT
+    ========================================================== -->
+    <main class="layout">
+
+      <!-- =======================================================
+        LEFT PANEL
+        Automations / Tools
+      ======================================================== -->
+      <aside class="left-panel">
+
+        <div class="sidebar-mode-tabs" role="tablist" aria-label="Sidebar sections">
+          <button class="active" type="button" data-sidebar-mode="automations">Automations</button>
+          <button type="button" data-sidebar-mode="tools">Tools</button>
+        </div>
+
+        <!-- AUTOMATIONS MANAGER -->
+        <section class="sidebar-section automations-section" data-sidebar-panel="automations">
+          <div class="sidebar-section-title">
+            <span>AUTOMATIONS</span>
+            <button id="refreshAutomationsBtn" class="icon-btn" title="Refresh automations" type="button">↻</button>
+          </div>
+
+          <div class="automation-controls">
+            <div class="search-box compact">
+              <span>⌕</span>
+              <input id="automationSearch" placeholder="Search automations..." autocomplete="off" />
+            </div>
+
+            <select id="automationSort" class="sort-select" aria-label="Sort automations">
+              <option value="updated_desc">Last updated</option>
+              <option value="updated_asc">Oldest updated</option>
+              <option value="name_asc">Name A-Z</option>
+              <option value="name_desc">Name Z-A</option>
+              <option value="created_desc">Newest created</option>
+              <option value="created_asc">Oldest created</option>
+            </select>
+          </div>
+
+          <button class="btn primary wide new-automation-btn" id="newAutomationBtn" type="button">
+            <span>＋</span>
+            New Automation
+          </button>
+
+          <div id="automationList" class="automation-list">
+            <div class="empty-mini">
+              <strong>No automations yet</strong>
+              <span>Create one to get started.</span>
+            </div>
+          </div>
+
+          <button id="viewAllAutomationsBtn" class="link-row" type="button">
+            View all automations <span>→</span>
+          </button>
+        </section>
+
+        <!-- TOOL LIBRARY -->
+        <section class="sidebar-section tool-section" data-sidebar-panel="tools">
+          <div class="sidebar-section-title">
+            <span>TOOL LIBRARY</span>
+            <button class="icon-btn" id="refreshToolsBtn" title="Refresh tools" type="button">↻</button>
+          </div>
+
+          <div class="search-box">
+            <span>⌕</span>
+            <input id="toolSearch" placeholder="Search tools..." autocomplete="off" />
+            <kbd>⌘K</kbd>
+          </div>
+
+          <div class="tabs compact-tabs">
+            <button class="active" data-tool-tab="all" type="button">All</button>
+            <button data-tool-tab="favorites" type="button">Favorites</button>
+            <button data-tool-tab="recent" type="button">Recent</button>
+          </div>
+
+          <p class="muted tiny">Auto-discovered from your workspace</p>
+
+          <div id="categoryList" class="category-list"></div>
+          <div id="toolResults" class="tool-results hidden"></div>
+
+          <section class="soft-card connector-card">
+            <h3>Add a tool or connector</h3>
+            <p>Add a new <code>@tool</code> function in <code>tools.py</code>, then refresh.</p>
+            <button class="btn ghost wide" id="addConnectorBtn" type="button">
+              Add Tool / Connector <span>＋</span>
+            </button>
+          </section>
+        </section>
+
+      </aside>
+
+      <!-- =======================================================
+        CENTER PANEL
+        Workspace
+      ======================================================== -->
+      <section class="center-panel">
+
+        <!-- WORKSPACE HEADER -->
+        <section class="workspace-title-card">
+          <div class="builder-title">
+            <div class="title-left">
+              <button class="plain-icon" id="backBtn" type="button" title="Back">←</button>
+              <h1 id="automationTitle">Study Planner</h1>
+              <button class="plain-icon" id="renameBtn" type="button" title="Rename">✎</button>
+              <span id="automationStatusBadge" class="badge draft">Draft</span>
+              <span id="saveStateBadge" class="badge subtle hidden">Saved</span>
+            </div>
+
+            <div class="title-actions">
+              <button class="plain-icon" id="favoriteBtn" type="button" title="Favorite">☆</button>
+              <button class="btn ghost" id="saveBtn" type="button">Save</button>
+              <button class="plain-icon" id="moreBtn" type="button" title="More">⋮</button>
+            </div>
+          </div>
+
+          <div class="workspace-mode-tabs" role="tablist" aria-label="Workspace view">
+            <button class="active" type="button" data-workspace-mode="build">Builder</button>
+            <button type="button" data-workspace-mode="code">Code</button>
+            <button type="button" data-workspace-mode="split">Split</button>
+          </div>
+        </section>
+
+        <!-- MAIN WORKSPACE -->
+        <section class="workspace-grid">
+
+          <!-- VISUAL BUILDER -->
+          <section class="builder-card visual-builder-card" data-workspace-panel="build">
+            <div class="card-heading">
+              <div>
+                <h2><span class="heading-icon">▥</span> Visual Builder</h2>
+                <p>Tell the automation what to do. Tools and code stay in sync.</p>
+              </div>
+
+              <div class="model-mini-pill">
+                <span>Model</span>
+                <strong id="modelMiniLabel">gemma4</strong>
+              </div>
+            </div>
+
+            <div class="form-body">
+              <div class="form-row">
+                <label for="nameInput"><span class="label-icon">◇</span> Name</label>
+                <input id="nameInput" value="Study Planner" autocomplete="off" />
+              </div>
+
+              <div class="form-row">
+                <label for="goalInput"><span class="label-icon">◎</span> Goal</label>
+                <textarea
+                  id="goalInput">Create a personalized study plan from class materials, notes, and syllabus. Extract key topics, generate a schedule, and export a study guide.</textarea>
+              </div>
+
+              <div class="form-row">
+                <label for="taskInput"><span class="label-icon">☷</span> Task</label>
+                <textarea
+                  id="taskInput">Read files from ./input. Summarize them and create ./output/study_plan.md with daily topics, practice tasks, revision checkpoints, important keywords, and a final checklist.</textarea>
+              </div>
+
+              <div class="form-row">
+                <label><span class="label-icon">✣</span> Tools</label>
+                <div>
+                  <div id="selectedTools" class="chips"></div>
+                  <button id="addToolInlineBtn" class="btn ghost small add-tool-inline" type="button">
+                    ＋ Add Tool
+                  </button>
+                </div>
+              </div>
+
+              <details id="advancedSettings" class="advanced-box">
+                <summary>
+                  <span>Advanced settings</span>
+                  <small>Model, safety, temperature, sync</small>
+                </summary>
+
+                <div class="advanced-grid">
+                  <label>
+                    Model
+                    <div class="input-with-action">
+                      <input id="modelInput" value="gemma4" autocomplete="off" />
+                      <button class="icon-btn" id="modelSettingsBtn" title="Model settings" type="button">☷</button>
+                    </div>
+                    <small class="muted">Local via Ollama</small>
+                  </label>
+
+                  <label>
+                    Max Steps
+                    <input id="maxStepsInput" class="number-input" type="number" min="1" max="100" value="12" />
+                    <small class="muted">Maximum reasoning steps</small>
+                  </label>
+
+                  <label>
+                    Temperature
+                    <input id="temperatureInput" class="number-input" type="number" min="0" max="2" step="0.1"
+                      value="0.2" />
+                    <small class="muted">Lower is more focused</small>
+                  </label>
+
+                  <label class="switch-line advanced-switch">
+                    Safe Mode
+                    <span>
+                      <input id="safeModeInput" type="checkbox" checked />
+                      <span class="switch"></span>
+                    </span>
+                    <small class="muted">Enable extra safety checks</small>
+                  </label>
+
+                  <label class="switch-line advanced-switch">
+                    Auto Sync
+                    <span>
+                      <input id="autoSyncInput" type="checkbox" checked />
+                      <span class="switch"></span>
+                    </span>
+                    <small class="muted">Visual ↔ Code updates live</small>
+                  </label>
+                </div>
+              </details>
+            </div>
+
+            <div class="builder-action-area">
+              <button class="run-wide" id="runBtn" type="button">Run Automation</button>
+              <p class="run-help">Watch progress on the right. Generated files appear below.</p>
+            </div>
+          </section>
+
+          <!-- SYNC HANDLE -->
+          <div class="sync-bridge" title="Bidirectional Sync">
+            <span>↻</span>
+          </div>
+
+          <!-- CODE EDITOR -->
+          <section class="builder-card code-editor-card" data-workspace-panel="code">
+            <div class="card-heading code-heading">
+              <div>
+                <h2><span class="heading-icon">&lt;/&gt;</span> Code Editor</h2>
+                <p>Edit Python and sync it back to the visual builder.</p>
+              </div>
+
+              <div class="sync-state">
+                <span id="syncStatusDot"></span>
+                <span id="syncStatusText">Bidirectional Sync</span>
+              </div>
+            </div>
+
+            <div class="code-editor-toolbar">
+              <button id="formatCodeBtn" class="btn ghost small" type="button">Format</button>
+              <button id="syncCodeToVisualBtn" class="btn ghost small" type="button">Sync to Visual</button>
+              <button id="resetCodeBtn" class="btn ghost small" type="button">Reset Code</button>
+            </div>
+
+            <textarea id="codeEditor" class="code-editor" spellcheck="false" aria-label="Python code editor"></textarea>
+          </section>
+
+        </section>
+
+        <!-- BOTTOM PANEL -->
+        <section class="bottom-panel">
+          <div class="bottom-tabs">
+            <button class="active" data-bottom-tab="outputs" type="button">
+              Output Files <span id="outputCount" class="bubble">0</span>
+            </button>
+            <button data-bottom-tab="code" type="button">&lt;/&gt; Generated Python</button>
+            <button data-bottom-tab="json" type="button">{} JSON Config</button>
+            <button data-bottom-tab="history" type="button">Run History</button>
+
+            <div class="tabs-spacer"></div>
+
+            <button class="btn ghost small" id="copyCodeBtn" type="button">Copy</button>
+            <button class="btn ghost small" id="downloadCodeBtn" type="button">Download</button>
+          </div>
+
+          <div id="outputsTab" class="tab-panel active">
+            <div class="outputs-layout">
+              <div class="outputs-main">
+                <div class="outputs-head">
+                  <div>
+                    <strong>Generated files</strong>
+                    <p class="muted tiny">Files created by your automations. Stored locally.</p>
+                  </div>
+
+                  <div class="output-actions">
+                    <button class="btn ghost small" id="openOutputFolderBtn" type="button">Open Folder</button>
+                    <button class="btn ghost small" id="refreshOutputsBtn" type="button">Refresh</button>
+                  </div>
+                </div>
+
+                <div id="outputsList" class="outputs-list"></div>
+              </div>
+
+              <pre id="outputPreview" class="output-preview">Select an output file to preview it here.</pre>
+            </div>
+          </div>
+
+          <div id="codeTab" class="tab-panel">
+            <pre id="codeBlock" class="code-block"></pre>
+          </div>
+
+          <div id="jsonTab" class="tab-panel">
+            <pre id="jsonBlock" class="code-block"></pre>
+          </div>
+
+          <div id="historyTab" class="tab-panel">
+            <div class="history-head">
+              <strong>Run history</strong>
+              <button id="refreshRunsBtn" class="btn ghost small" type="button">Refresh</button>
+            </div>
+            <div id="runHistoryList" class="run-history-list"></div>
+          </div>
+        </section>
+
+      </section>
+
+      <!-- =======================================================
+        RIGHT PANEL
+        Live Run
+      ======================================================== -->
+      <aside class="right-panel">
+        <div class="panel-header live-header">
+          <div>
+            <h2>Live Run</h2>
+            <div class="live-state-line">
+              <span id="runStatusDot" class="run-status-dot idle"></span>
+              <span id="runStatusText" class="muted tiny">Ready</span>
+            </div>
+          </div>
+
+          <button class="btn ghost small" id="clearEventsBtn" type="button">Clear</button>
+        </div>
+
+        <section id="runCurrentStepCard" class="run-current-step-card">
+          <span class="muted tiny">Current step</span>
+          <strong id="runCurrentStepText">Ready to run</strong>
+          <p id="runCurrentStepHint">Click Run Automation to watch the agent plan, use tools, and create outputs.</p>
+        </section>
+
+        <section id="runSummaryCard" class="run-summary-card">
+          <div>
+            <strong id="runDuration">00:00:00</strong>
+            <span>Duration</span>
+          </div>
+          <div>
+            <strong id="runSteps">0</strong>
+            <span>Steps</span>
+          </div>
+          <div>
+            <strong id="runRetries">0</strong>
+            <span>Retries</span>
+          </div>
+          <div>
+            <strong id="runOutputs">0</strong>
+            <span>Outputs</span>
+          </div>
+        </section>
+
+        <div class="run-view-tabs">
+          <button class="active" data-run-view="simple" type="button">Simple</button>
+          <button data-run-view="detailed" type="button">Detailed</button>
+          <button data-run-view="debug" type="button">Debug</button>
+        </div>
+
+        <div id="runSuccessCard" class="run-success-card hidden">
+          <strong>Outputs ready</strong>
+          <p>Generated files are available in the Output Files panel.</p>
+          <button class="btn ghost small" type="button" data-bottom-tab="outputs">View outputs</button>
+        </div>
+
+        <div id="eventStream" class="event-stream">
+          <div class="empty-state">
+            <div class="empty-icon">✦</div>
+            <h3>Ready to run</h3>
+            <p>Click Run Automation to watch the automation progress here.</p>
+          </div>
+        </div>
+
+        <div class="retry-row">
+          <span class="retry-icon">↻</span>
+          <strong>Retry</strong>
+          <span id="retryText">No retries needed</span>
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- =========================================================
+      FOOTER
+    ========================================================== -->
+    <footer class="footer">
+      <span><span class="mono-icon">lock</span> Local-first</span>
+      <span>•</span>
+      <span>Your data stays on your machine</span>
+      <span class="footer-persist">Persistent with SQLite + JSON</span>
+      <span class="version">AgentKit Studio v1.0.0</span>
+    </footer>
+  </div>
+
+  <!-- =========================================================
+    MODALS / DRAWERS
+  ========================================================== -->
+
+  <!-- NEW AUTOMATION MODAL -->
+  <dialog id="newAutomationModal" class="modal">
+    <form method="dialog" class="modal-card template-modal-card">
+      <div class="modal-head">
+        <div>
+          <h2>New Automation</h2>
+          <p class="muted tiny">Choose a template or start from scratch.</p>
+        </div>
+        <button class="plain-icon" value="cancel" type="submit">×</button>
+      </div>
+
+      <label>
+        Name
+        <input id="newAutomationName" placeholder="Example: Research Brief Generator" />
+      </label>
+
+      <div class="template-picker">
+        <label for="templateSearch">
+          Start from template
+        </label>
+
+        <div class="template-filter-row">
+          <div class="search-box template-search-box">
+            <span>⌕</span>
+            <input id="templateSearch" placeholder="Search templates..." autocomplete="off" />
+          </div>
+
+          <select id="templateCategoryFilter" class="template-category-filter"
+            aria-label="Filter templates by category">
+            <option value="All">All categories</option>
+          </select>
+        </div>
+
+        <div id="templateCategoryChips" class="template-category-chips"></div>
+
+        <div id="templateList" class="template-list" role="listbox" aria-label="Automation templates">
+          <button class="template-card selected" type="button" data-template-id="">
+            <span class="template-icon">◇</span>
+            <span>
+              <strong>Blank automation</strong>
+              <small>Start from scratch with an empty automation.</small>
+            </span>
+            <span class="template-meta">Blank</span>
+            <span class="template-check">✓</span>
+          </button>
+        </div>
+
+        <div class="template-pagination">
+          <button id="templatePrevBtn" class="btn ghost small" type="button">← Previous</button>
+          <span id="templatePageInfo">Page 1 of 1</span>
+          <button id="templateNextBtn" class="btn ghost small" type="button">Next →</button>
+        </div>
+
+        <input id="templateSelect" type="hidden" value="" />
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn ghost" value="cancel" type="submit">Cancel</button>
+        <button class="btn primary" id="createAutomationBtn" value="default" type="button">Create</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- DELETE CONFIRM MODAL -->
+  <dialog id="confirmDeleteModal" class="modal">
+    <form method="dialog" class="modal-card">
+      <div class="modal-head">
+        <h2>Delete automation?</h2>
+        <button class="plain-icon" value="cancel" type="submit">×</button>
+      </div>
+
+      <p class="muted">
+        This will remove the automation from local storage. Run history and output files are not deleted.
+      </p>
+
+      <div class="modal-actions">
+        <button class="btn ghost" value="cancel" type="submit">Cancel</button>
+        <button class="btn danger" id="confirmDeleteBtn" value="default" type="button">Delete</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- TOOL PICKER MODAL -->
+  <dialog id="toolPickerModal" class="modal wide-modal">
+    <form method="dialog" class="modal-card">
+      <div class="modal-head">
+        <div>
+          <h2>Add Tool</h2>
+          <p class="muted tiny">Tools are auto-discovered from your local workspace.</p>
+        </div>
+        <button class="plain-icon" value="cancel" type="submit">×</button>
+      </div>
+
+      <div class="search-box">
+        <span>⌕</span>
+        <input id="toolPickerSearch" placeholder="Search tools..." autocomplete="off" />
+      </div>
+
+      <div id="toolPickerList" class="tool-picker-list"></div>
+    </form>
+  </dialog>
+
+  <!-- OUTPUT PREVIEW MODAL -->
+  <dialog id="outputPreviewModal" class="modal wide-modal">
+    <form method="dialog" class="modal-card output-modal-card">
+      <div class="modal-head">
+        <div>
+          <h2 id="outputPreviewTitle">Output Preview</h2>
+          <p id="outputPreviewMeta" class="muted tiny"></p>
+        </div>
+        <button class="plain-icon" value="cancel" type="submit">×</button>
+      </div>
+
+      <pre id="outputPreviewModalContent" class="output-preview large">Loading...</pre>
+    </form>
+  </dialog>
+
+  <!-- TOAST -->
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="/static/app.js"></script>
+</body>
+
+</html>

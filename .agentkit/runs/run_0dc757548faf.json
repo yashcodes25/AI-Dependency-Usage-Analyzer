@@ -1,0 +1,35 @@
+{
+  "run_id": "run_0dc757548faf",
+  "automation_id": "adhoc-ce06b024",
+  "automation_name": "Dependency Usage Analyzer",
+  "status": "success",
+  "started_at": "2026-05-08T08:32:08+00:00",
+  "finished_at": "2026-05-08T08:48:04+00:00",
+  "duration_ms": 956000,
+  "result": {
+    "answer": "Dependency Report Generation",
+    "steps": 6,
+    "success": true,
+    "error": null
+  },
+  "error": null,
+  "output_files": [
+    {
+      "name": "app.py",
+      "path": "app.py",
+      "size_bytes": 306,
+      "modified_at": "2026-05-08T13:47:28",
+      "extension": ".py",
+      "mime_type": "text/x-python",
+      "previewable": true
+    }
+  ],
+  "stats": {
+    "duration_ms": 956000,
+    "total_events": 47,
+    "steps": 13,
+    "retries": 10,
+    "errors": 4,
+    "outputs": 1
+  }
+}

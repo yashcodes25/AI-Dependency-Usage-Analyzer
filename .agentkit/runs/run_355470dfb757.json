@@ -1,0 +1,107 @@
+{
+  "run_id": "run_355470dfb757",
+  "automation_id": "dependency-usage-analyzer",
+  "automation_name": "Dependency Usage Analyzer",
+  "status": "success",
+  "started_at": "2026-05-08T17:39:42+00:00",
+  "finished_at": "2026-05-08T17:42:08+00:00",
+  "duration_ms": 146000,
+  "result": {
+    "answer": "The project analysis has been completed. All reports are available in the ./output directory.",
+    "steps": 11,
+    "success": true,
+    "error": null
+  },
+  "error": null,
+  "output_files": [
+    {
+      "name": "execution_log.md",
+      "path": "execution_log.md",
+      "size_bytes": 1072,
+      "modified_at": "2026-05-08T23:12:04",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "final_summary.md",
+      "path": "final_summary.md",
+      "size_bytes": 695,
+      "modified_at": "2026-05-08T23:11:49",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "ai_analysis_report.md",
+      "path": "ai_analysis_report.md",
+      "size_bytes": 965,
+      "modified_at": "2026-05-08T23:11:39",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "import_mapping.md",
+      "path": "import_mapping.md",
+      "size_bytes": 311,
+      "modified_at": "2026-05-08T23:11:20",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "dependency_statistics.md",
+      "path": "dependency_statistics.md",
+      "size_bytes": 450,
+      "modified_at": "2026-05-08T23:11:12",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "project_overview.md",
+      "path": "project_overview.md",
+      "size_bytes": 742,
+      "modified_at": "2026-05-08T23:11:02",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "library_summary.md",
+      "path": "library_summary.md",
+      "size_bytes": 520,
+      "modified_at": "2026-05-08T23:10:51",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "dependency_report.md",
+      "path": "dependency_report.md",
+      "size_bytes": 482,
+      "modified_at": "2026-05-08T23:10:42",
+      "extension": ".md",
+      "mime_type": "text/markdown",
+      "previewable": true
+    },
+    {
+      "name": "app.py",
+      "path": "app.py",
+      "size_bytes": 306,
+      "modified_at": "2026-05-08T13:47:28",
+      "extension": ".py",
+      "mime_type": "text/x-python",
+      "previewable": true
+    }
+  ],
+  "stats": {
+    "duration_ms": 146000,
+    "total_events": 59,
+    "steps": 15,
+    "retries": 5,
+    "errors": 0,
+    "outputs": 9
+  }
+}

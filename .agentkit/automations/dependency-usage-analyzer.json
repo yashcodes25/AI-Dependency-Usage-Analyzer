@@ -1,0 +1,22 @@
+{
+  "id": "dependency-usage-analyzer",
+  "name": "Dependency Usage Analyzer",
+  "type": "agent",
+  "model": "llama3",
+  "goal": "Analyze Python project files and detect imported libraries,\ndependency usage, file-wise import mapping, project structure,\nand AI-generated dependency insights. Generate detailed markdown\nreports for dependency analysis and project overview.",
+  "task": "Read Python files from ./input.\n\nAnalyze:\n- Imported libraries\n- Dependency usage\n- External vs built-in modules\n- File-wise import mapping\n- Library purposes\n- Dependency statistics\n- AI-generated project insights\n\nGenerate the following markdown reports inside ./output:\n\n1. dependency_report.md\n   - Complete dependency analysis\n   - File-wise imports\n   - Usage explanations\n\n2. library_summary.md\n   - Summary of all detected libraries\n   - Purpose of each library\n\n3. project_overview.md\n   - Project description\n   - Workflow explanation\n   - Features overview\n\n4. dependency_statistics.md\n   - Total imports\n   - Library counts\n   - Usage frequency\n\n5. import_mapping.md\n   - File-wise dependency mapping\n   - Categorized imports\n\n6. ai_analysis_report.md\n   - AI-generated dependency insights\n   - Recommendations\n   - Best practices\n\n7. final_summary.md\n   - Final conclusions\n   - Key findings\n   - Overall project analysis\n\n8. execution_log.md\n   - Step-by-step execution logs\n   - Processing status\n   - Completion summary\n\nExport all reports in markdown (.md) format.",
+  "tools": [
+    "create_markdown_report",
+    "list_files",
+    "read_file",
+    "read_pdf"
+  ],
+  "max_steps": 12,
+  "safe_mode": true,
+  "temperature": 0.2,
+  "base_url": "http://localhost:11434",
+  "steps": [],
+  "created_at": "2026-05-08T09:14:04+00:00",
+  "updated_at": "2026-05-08T09:14:04+00:00",
+  "owner_id": "1a634a8d-6904-412e-bcb6-c45228a8a8d5"
+}
